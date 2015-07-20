@@ -1,0 +1,11 @@
+<phpunit
+	bootstrap="./bootstrap.php"
+	backupGlobals="false"
+	forceCoversAnnotation="true"
+>
+	<filter>
+		<whitelist>
+			<directory suffix=".php">../src</directory>
+		</whitelist>
+	</filter>
+</phpunit>

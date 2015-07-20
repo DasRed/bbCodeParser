@@ -1,0 +1,23 @@
+{
+	"name" : "BBCodeParser",
+	"homepage": "https://github.com/DasRed/bbCodeParser",
+	"autoload": {
+		"psr-4": {
+			"DasRed\\Parser\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"DasRedTest\\Parser\\": "test/"
+		}
+	},
+	"require": {
+		"php": ">=5.5"
+	},
+	"minimum-stability": "dev",
+	"prefer-stable": true,
+	"require": {
+		"zendframework/zend-config": "~2.4",
+		"zendframework/zend-servicemanager": "~2.4"
+	}
+}
