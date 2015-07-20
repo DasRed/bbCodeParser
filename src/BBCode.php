@@ -23,9 +23,47 @@ class BBCode
 	/**
 	 * construct
 	 *
-	 * @param array $bbCodes example see Parse::bbCodes
+	 * @param string $configFile
 	 */
 	public function __construct($configFile = __DIR__ . '/../config/bbcodes.php')
+	{
+		if ($configFile !== null)
+		{
+			$this->loadConfig($configFile);
+		}
+	}
+
+	/**
+	 *
+	 * @param string $regex
+	 * @param string $replacement
+	 * @return self
+	 */
+	protected function appendBbCode($regex, $replacement)
+	{
+		$this->bbCodes[$regex] = $replacement;
+
+		return $this;
+	}
+
+	/**
+	 *
+	 * @return array
+	 */
+	protected function getBbCodes()
+	{
+		return $this->bbCodes;
+	}
+
+	/**
+	 *
+	 * @param string $configFile
+	 * @throws EntryIsNotAnArray
+	 * @throws RegexIsNotDefined
+	 * @throws ReplacementIsNotDefined
+	 * @return self
+	 */
+	protected function loadConfig($configFile)
 	{
 		// parse config
 		$result = Factory::fromFile($configFile, false, true);
@@ -33,7 +71,7 @@ class BBCode
 		// no bbcodes or bbcodes are empty in ini file
 		if (array_key_exists('bbcodes', $result) === false || is_array($result['bbcodes']) === 0)
 		{
-			return;
+			return $this;
 		}
 
 		// add all
@@ -59,28 +97,9 @@ class BBCode
 			// append
 			$this->appendBbCode($entry['regex'], $entry['replacement']);
 		}
-	}
-
-	/**
-	 *
-	 * @param string $regex
-	 * @param string $replacement
-	 * @return self
-	 */
-	protected function appendBbCode($regex, $replacement)
-	{
-		$this->bbCodes[$regex] = $replacement;
 
 		return $this;
-	}
 
-	/**
-	 *
-	 * @return array
-	 */
-	protected function getBbCodes()
-	{
-		return $this->bbCodes;
 	}
 
 	/**

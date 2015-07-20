@@ -15,7 +15,36 @@ class BBCodeTest extends \PHPUnit_Framework_TestCase
 	/**
 	 * @covers ::__construct
 	 */
-	public function testConstructorDefault()
+	public function testConstructorWithConfigFile()
+	{
+		$bbcode = new BBCode(__DIR__ . '/files/constructor-1.ini');
+
+		$reflectionMethodGetBbCodes = new \ReflectionMethod($bbcode, 'getBbCodes');
+		$reflectionMethodGetBbCodes->setAccessible(true);
+		$this->assertEquals([
+			'#\[br\]#i' => '<br>',
+			'#\[b\](.+)\[/b\]#isU' => '<strong>$1</strong>',
+			'#\[i\](.+)\[/i\]#isU' => '<em>$1</em>'
+		], $reflectionMethodGetBbCodes->invoke($bbcode));
+	}
+
+	/**
+	 * @covers ::__construct
+	 */
+	public function testConstructorWithNull()
+	{
+		$bbcode = new BBCode(null);
+
+		$reflectionMethodGetBbCodes = new \ReflectionMethod($bbcode, 'getBbCodes');
+		$reflectionMethodGetBbCodes->setAccessible(true);
+		$this->assertEquals([], $reflectionMethodGetBbCodes->invoke($bbcode));
+
+	}
+
+	/**
+	 * @covers ::loadConfig
+	 */
+	public function testLoadConfigDefault()
 	{
 		$bbcode = new BBCode();
 
@@ -51,93 +80,117 @@ class BBCodeTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @covers ::__construct
+	 * @covers ::loadConfig
 	 */
-	public function testConstructorNormalIni()
+	public function testLoadConfigNormalIni()
 	{
-		$bbcode = new BBCode(__DIR__ . '/files/constructor-1.ini');
+		$bbcode = new BBCode(null);
 
-		$reflectionMethod = new \ReflectionMethod($bbcode, 'getBbCodes');
-		$reflectionMethod->setAccessible(true);
+		$reflectionMethodLoadConfig = new \ReflectionMethod($bbcode, 'loadConfig');
+		$reflectionMethodLoadConfig->setAccessible(true);
+		$this->assertSame($bbcode, $reflectionMethodLoadConfig->invoke($bbcode, __DIR__ . '/files/constructor-1.ini'));
 
+		$reflectionMethodGetBbCodes = new \ReflectionMethod($bbcode, 'getBbCodes');
+		$reflectionMethodGetBbCodes->setAccessible(true);
 		$this->assertEquals([
 			'#\[br\]#i' => '<br>',
 			'#\[b\](.+)\[/b\]#isU' => '<strong>$1</strong>',
 			'#\[i\](.+)\[/i\]#isU' => '<em>$1</em>'
-		], $reflectionMethod->invoke($bbcode));
+		], $reflectionMethodGetBbCodes->invoke($bbcode));
 	}
 
 	/**
-	 * @covers ::__construct
+	 * @covers ::loadConfig
 	 */
-	public function testConstructorNormalPhp()
+	public function testLoadConfigNormalPhp()
 	{
-		$bbcode = new BBCode(__DIR__ . '/files/constructor-4.php');
+		$bbcode = new BBCode(null);
 
-		$reflectionMethod = new \ReflectionMethod($bbcode, 'getBbCodes');
-		$reflectionMethod->setAccessible(true);
+		$reflectionMethodLoadConfig = new \ReflectionMethod($bbcode, 'loadConfig');
+		$reflectionMethodLoadConfig->setAccessible(true);
+		$this->assertSame($bbcode, $reflectionMethodLoadConfig->invoke($bbcode, __DIR__ . '/files/constructor-4.php'));
 
+		$reflectionMethodGetBbCodes = new \ReflectionMethod($bbcode, 'getBbCodes');
+		$reflectionMethodGetBbCodes->setAccessible(true);
 		$this->assertEquals([
 			'#\[br\]#i' => '<br>',
 			'#\[b\](.+)\[/b\]#isU' => '<strong>$1</strong>',
 			'#\[i\](.+)\[/i\]#isU' => '<em>$1</em>'
-		], $reflectionMethod->invoke($bbcode));
+		], $reflectionMethodGetBbCodes->invoke($bbcode));
 	}
 
 	/**
-	 * @covers ::__construct
+	 * @covers ::loadConfig
 	 */
-	public function testConstructorEmptyWithEmptyFile()
+	public function testLoadConfigEmptyWithEmptyFile()
 	{
-		$bbcode = new BBCode(__DIR__ . '/files/constructor-2.ini');
+		$bbcode = new BBCode(null);
 
-		$reflectionMethod = new \ReflectionMethod($bbcode, 'getBbCodes');
-		$reflectionMethod->setAccessible(true);
+		$reflectionMethodLoadConfig = new \ReflectionMethod($bbcode, 'loadConfig');
+		$reflectionMethodLoadConfig->setAccessible(true);
+		$this->assertSame($bbcode, $reflectionMethodLoadConfig->invoke($bbcode, __DIR__ . '/files/constructor-2.ini'));
 
-		$this->assertEquals([], $reflectionMethod->invoke($bbcode));
+		$reflectionMethodGetBbCodes = new \ReflectionMethod($bbcode, 'getBbCodes');
+		$reflectionMethodGetBbCodes->setAccessible(true);
+		$this->assertEquals([], $reflectionMethodGetBbCodes->invoke($bbcode));
 	}
 
 	/**
-	 * @covers ::__construct
+	 * @covers ::loadConfig
 	 */
-	public function testConstructorEmptyWithBBCodeKeyDoesNotExists()
+	public function testLoadConfigEmptyWithBBCodeKeyDoesNotExists()
 	{
-		$bbcode = new BBCode(__DIR__ . '/files/constructor-3.ini');
+		$bbcode = new BBCode(null);
 
-		$reflectionMethod = new \ReflectionMethod($bbcode, 'getBbCodes');
-		$reflectionMethod->setAccessible(true);
+		$reflectionMethodLoadConfig = new \ReflectionMethod($bbcode, 'loadConfig');
+		$reflectionMethodLoadConfig->setAccessible(true);
+		$this->assertSame($bbcode, $reflectionMethodLoadConfig->invoke($bbcode, __DIR__ . '/files/constructor-3.ini'));
 
-		$this->assertEquals([], $reflectionMethod->invoke($bbcode));
+		$reflectionMethodGetBbCodes = new \ReflectionMethod($bbcode, 'getBbCodes');
+		$reflectionMethodGetBbCodes->setAccessible(true);
+		$this->assertEquals([], $reflectionMethodGetBbCodes->invoke($bbcode));
 	}
 
 	/**
-	 * @covers ::__construct
+	 * @covers ::loadConfig
 	 */
-	public function testConstructorErrorWithEntryIsNotAnArray()
+	public function testLoadConfigErrorWithEntryIsNotAnArray()
 	{
 		$this->setExpectedException(EntryIsNotAnArray::class, 'The entry at index "1" is not an array!');
 
-		new BBCode(__DIR__ . '/files/constructor-5.php');
+		$bbcode = new BBCode(null);
+
+		$reflectionMethodLoadConfig = new \ReflectionMethod($bbcode, 'loadConfig');
+		$reflectionMethodLoadConfig->setAccessible(true);
+		$reflectionMethodLoadConfig->invoke($bbcode, __DIR__ . '/files/constructor-5.php');
 	}
 
 	/**
-	 * @covers ::__construct
+	 * @covers ::loadConfig
 	 */
-	public function testConstructorErrorWithRegexIsNotDefined()
+	public function testLoadConfigErrorWithRegexIsNotDefined()
 	{
 		$this->setExpectedException(RegexIsNotDefined::class, 'The array key "regex" is not defined at index "1"!');
 
-		new BBCode(__DIR__ . '/files/constructor-6.php');
+		$bbcode = new BBCode(null);
+
+		$reflectionMethodLoadConfig = new \ReflectionMethod($bbcode, 'loadConfig');
+		$reflectionMethodLoadConfig->setAccessible(true);
+		$reflectionMethodLoadConfig->invoke($bbcode, __DIR__ . '/files/constructor-6.php');
 	}
 
 	/**
-	 * @covers ::__construct
+	 * @covers ::loadConfig
 	 */
-	public function testConstructorErrorWithReplacementIsNotDefined()
+	public function testLoadConfigErrorWithReplacementIsNotDefined()
 	{
 		$this->setExpectedException(ReplacementIsNotDefined::class, 'The array key "replacement" is not defined at index "1"!');
 
-		new BBCode(__DIR__ . '/files/constructor-7.php');
+		$bbcode = new BBCode(null);
+
+		$reflectionMethodLoadConfig = new \ReflectionMethod($bbcode, 'loadConfig');
+		$reflectionMethodLoadConfig->setAccessible(true);
+		$reflectionMethodLoadConfig->invoke($bbcode, __DIR__ . '/files/constructor-7.php');
 	}
 
 	/**
