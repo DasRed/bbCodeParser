@@ -1,5 +1,5 @@
 {
-	"name": "dasred/bbCodeParser",
+	"name": "dasred/bb-code-parser",
 	"homepage": "https://github.com/DasRed/bbCodeParser",
 
 	"prefer-stable": true,
