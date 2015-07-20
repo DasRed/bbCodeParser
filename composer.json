@@ -9,8 +9,8 @@
 		"php": ">=5.5"
 	},
 	"require": {
-		"zendframework/zend-config": "~2.4",
-		"zendframework/zend-servicemanager": "~2.4"
+		"zendframework/zend-config": "~2.5",
+		"zendframework/zend-servicemanager": "~2.5"
 	},
 
 	"autoload": {
