@@ -50,7 +50,7 @@ class BBCode
 	 *
 	 * @return array
 	 */
-	protected function getBbCodes()
+	public function getBbCodes()
 	{
 		return $this->bbCodes;
 	}
