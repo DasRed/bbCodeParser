@@ -19,13 +19,11 @@ class BBCodeTest extends \PHPUnit_Framework_TestCase
 	{
 		$bbcode = new BBCode(__DIR__ . '/files/constructor-1.ini');
 
-		$reflectionMethodGetBbCodes = new \ReflectionMethod($bbcode, 'getBbCodes');
-		$reflectionMethodGetBbCodes->setAccessible(true);
 		$this->assertEquals([
 			'#\[br\]#i' => '<br>',
 			'#\[b\](.+)\[/b\]#isU' => '<strong>$1</strong>',
 			'#\[i\](.+)\[/i\]#isU' => '<em>$1</em>'
-		], $reflectionMethodGetBbCodes->invoke($bbcode));
+		], $bbcode->getBbCodes());
 	}
 
 	/**
@@ -35,9 +33,7 @@ class BBCodeTest extends \PHPUnit_Framework_TestCase
 	{
 		$bbcode = new BBCode(null);
 
-		$reflectionMethodGetBbCodes = new \ReflectionMethod($bbcode, 'getBbCodes');
-		$reflectionMethodGetBbCodes->setAccessible(true);
-		$this->assertEquals([], $reflectionMethodGetBbCodes->invoke($bbcode));
+		$this->assertEquals([], $bbcode->getBbCodes());
 
 	}
 
@@ -48,21 +44,18 @@ class BBCodeTest extends \PHPUnit_Framework_TestCase
 	{
 		$bbcode = new BBCode();
 
-		$reflectionMethod = new \ReflectionMethod($bbcode, 'getBbCodes');
-		$reflectionMethod->setAccessible(true);
-
 		$this->assertEquals([
 			'#\[br\]#i' => '<br>',
-			'#\[b\](.+)\[/b\]#isU' => '<strong>$1</strong>',
-			'#\[i\](.+)\[/i\]#isU' => '<em>$1</em>',
-			'#\[u\](.+)\[/u\]#isU' => '<u>$1</u>',
-			'#\[h1\](.+)\[/h1\]#isU' => '<h1><a href="#$1" name="$1">$1</a></h1>',
-			'#\[h2\](.+)\[/h2\]#isU' => '<h2><a href="#$1" name="$1">$1</a></h2>',
-			'#\[h3\](.+)\[/h3\]#isU' => '<h3><a href="#$1" name="$1">$1</a></h3>',
-			'#\[h4\](.+)\[/h4\]#isU' => '<h4><a href="#$1" name="$1">$1</a></h4>',
-			'#\[h5\](.+)\[/h5\]#isU' => '<h5><a href="#$1" name="$1">$1</a></h5>',
-			'#\[h6\](.+)\[/h6\]#isU' => '<h6><a href="#$1" name="$1">$1</a></h6>',
-			'#\[p\](.+)\[/p\]#isU' => '<p>$1</p>',
+			'#\[b(.*)\](.+)\[/b\]#isU' => '<strong$1>$2</strong>',
+			'#\[i(.*)\](.+)\[/i\]#isU' => '<em$1>$2</em>',
+			'#\[u(.*)\](.+)\[/u\]#isU' => '<u$1>$2</u>',
+			'#\[h1(.*)\](.+)\[/h1\]#isU' => '<h1$1>$2</h1>',
+			'#\[h2(.*)\](.+)\[/h2\]#isU' => '<h2$1>$2</h2>',
+			'#\[h3(.*)\](.+)\[/h3\]#isU' => '<h3$1>$2</h3>',
+			'#\[h4(.*)\](.+)\[/h4\]#isU' => '<h4$1>$2</h4>',
+			'#\[h5(.*)\](.+)\[/h5\]#isU' => '<h5$1>$2</h5>',
+			'#\[h6(.*)\](.+)\[/h6\]#isU' => '<h6$1>$2</h6>',
+			'#\[p(.*)\](.+)\[/p\]#isU' => '<p$1>$2</p>',
 			'#\[color=(.+)\](.+)\[/color\]#isU' => '<span style="color:$1">$2</span>',
 			'#\[size=([0-9]+)\](.+)\[/size\]#isU' => '<span style="font-size:$1px">$2</span>',
 			'#\[img\](.+)\[/img\]#isU' => '<img src="$1">',
@@ -76,7 +69,7 @@ class BBCodeTest extends \PHPUnit_Framework_TestCase
 			'#\[a=(.+)\](.+)\[/a\]#isU' => '<a href="#$1" name="$1">$2</a>',
 			'#\[list\](.+)\[/list\]#isU' => '<ul>$1</ul>',
 			'#\[\*\](.+)\[/\*\]#isU' => '<li>$1</li>'
-		], $reflectionMethod->invoke($bbcode));
+		], $bbcode->getBbCodes());
 	}
 
 	/**
@@ -90,13 +83,11 @@ class BBCodeTest extends \PHPUnit_Framework_TestCase
 		$reflectionMethodLoadConfig->setAccessible(true);
 		$this->assertSame($bbcode, $reflectionMethodLoadConfig->invoke($bbcode, __DIR__ . '/files/constructor-1.ini'));
 
-		$reflectionMethodGetBbCodes = new \ReflectionMethod($bbcode, 'getBbCodes');
-		$reflectionMethodGetBbCodes->setAccessible(true);
 		$this->assertEquals([
 			'#\[br\]#i' => '<br>',
 			'#\[b\](.+)\[/b\]#isU' => '<strong>$1</strong>',
 			'#\[i\](.+)\[/i\]#isU' => '<em>$1</em>'
-		], $reflectionMethodGetBbCodes->invoke($bbcode));
+		], $bbcode->getBbCodes());
 	}
 
 	/**
@@ -110,13 +101,11 @@ class BBCodeTest extends \PHPUnit_Framework_TestCase
 		$reflectionMethodLoadConfig->setAccessible(true);
 		$this->assertSame($bbcode, $reflectionMethodLoadConfig->invoke($bbcode, __DIR__ . '/files/constructor-4.php'));
 
-		$reflectionMethodGetBbCodes = new \ReflectionMethod($bbcode, 'getBbCodes');
-		$reflectionMethodGetBbCodes->setAccessible(true);
 		$this->assertEquals([
 			'#\[br\]#i' => '<br>',
 			'#\[b\](.+)\[/b\]#isU' => '<strong>$1</strong>',
 			'#\[i\](.+)\[/i\]#isU' => '<em>$1</em>'
-		], $reflectionMethodGetBbCodes->invoke($bbcode));
+		], $bbcode->getBbCodes());
 	}
 
 	/**
@@ -130,9 +119,7 @@ class BBCodeTest extends \PHPUnit_Framework_TestCase
 		$reflectionMethodLoadConfig->setAccessible(true);
 		$this->assertSame($bbcode, $reflectionMethodLoadConfig->invoke($bbcode, __DIR__ . '/files/constructor-2.ini'));
 
-		$reflectionMethodGetBbCodes = new \ReflectionMethod($bbcode, 'getBbCodes');
-		$reflectionMethodGetBbCodes->setAccessible(true);
-		$this->assertEquals([], $reflectionMethodGetBbCodes->invoke($bbcode));
+		$this->assertEquals([], $bbcode->getBbCodes());
 	}
 
 	/**
@@ -146,9 +133,7 @@ class BBCodeTest extends \PHPUnit_Framework_TestCase
 		$reflectionMethodLoadConfig->setAccessible(true);
 		$this->assertSame($bbcode, $reflectionMethodLoadConfig->invoke($bbcode, __DIR__ . '/files/constructor-3.ini'));
 
-		$reflectionMethodGetBbCodes = new \ReflectionMethod($bbcode, 'getBbCodes');
-		$reflectionMethodGetBbCodes->setAccessible(true);
-		$this->assertEquals([], $reflectionMethodGetBbCodes->invoke($bbcode));
+		$this->assertEquals([], $bbcode->getBbCodes());
 	}
 
 	/**
@@ -202,17 +187,14 @@ class BBCodeTest extends \PHPUnit_Framework_TestCase
 
 		$bbcode = new BBCode($file);
 
-		$reflectionMethodGetBbCodes = new \ReflectionMethod($bbcode, 'getBbCodes');
-		$reflectionMethodGetBbCodes->setAccessible(true);
-
 		$reflectionMethodAppendBbCode = new \ReflectionMethod($bbcode, 'appendBbCode');
 		$reflectionMethodAppendBbCode->setAccessible(true);
 
-		$this->assertEquals([], $reflectionMethodGetBbCodes->invoke($bbcode));
+		$this->assertEquals([], $bbcode->getBbCodes());
 		$this->assertSame($bbcode, $reflectionMethodAppendBbCode->invoke($bbcode, 'key', 'value'));
 		$this->assertEquals([
 			'key' => 'value'
-		], $reflectionMethodGetBbCodes->invoke($bbcode));
+		], $bbcode->getBbCodes());
 	}
 
 	/**
@@ -224,17 +206,14 @@ class BBCodeTest extends \PHPUnit_Framework_TestCase
 
 		$bbcode = new BBCode($file);
 
-		$reflectionMethodGetBbCodes = new \ReflectionMethod($bbcode, 'getBbCodes');
-		$reflectionMethodGetBbCodes->setAccessible(true);
-
 		$reflectionMethodAppendBbCode = new \ReflectionMethod($bbcode, 'appendBbCode');
 		$reflectionMethodAppendBbCode->setAccessible(true);
 
-		$this->assertEquals([], $reflectionMethodGetBbCodes->invoke($bbcode));
+		$this->assertEquals([], $bbcode->getBbCodes());
 		$this->assertSame($bbcode, $reflectionMethodAppendBbCode->invoke($bbcode, 'key', 'value'));
 		$this->assertEquals([
 			'key' => 'value'
-		], $reflectionMethodGetBbCodes->invoke($bbcode));
+		], $bbcode->getBbCodes());
 	}
 
 	public function dataProviderParse()

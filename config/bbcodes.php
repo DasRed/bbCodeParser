@@ -4,18 +4,18 @@ return [
 	'bbcodes' => [
 		['regex' => '#\[br\]#i', 'replacement' => '<br>'],
 
-		['regex' => '#\[b\](.+)\[/b\]#isU', 'replacement' => '<strong>$1</strong>'],
-		['regex' => '#\[i\](.+)\[/i\]#isU', 'replacement' => '<em>$1</em>'],
-		['regex' => '#\[u\](.+)\[/u\]#isU', 'replacement' => '<u>$1</u>'],
+		['regex' => '#\[b(.*)\](.+)\[/b\]#isU', 'replacement' => '<strong$1>$2</strong>'],
+		['regex' => '#\[i(.*)\](.+)\[/i\]#isU', 'replacement' => '<em$1>$2</em>'],
+		['regex' => '#\[u(.*)\](.+)\[/u\]#isU', 'replacement' => '<u$1>$2</u>'],
 
-		['regex' => '#\[h1\](.+)\[/h1\]#isU', 'replacement' => '<h1><a href="#$1" name="$1">$1</a></h1>'],
-		['regex' => '#\[h2\](.+)\[/h2\]#isU', 'replacement' => '<h2><a href="#$1" name="$1">$1</a></h2>'],
-		['regex' => '#\[h3\](.+)\[/h3\]#isU', 'replacement' => '<h3><a href="#$1" name="$1">$1</a></h3>'],
-		['regex' => '#\[h4\](.+)\[/h4\]#isU', 'replacement' => '<h4><a href="#$1" name="$1">$1</a></h4>'],
-		['regex' => '#\[h5\](.+)\[/h5\]#isU', 'replacement' => '<h5><a href="#$1" name="$1">$1</a></h5>'],
-		['regex' => '#\[h6\](.+)\[/h6\]#isU', 'replacement' => '<h6><a href="#$1" name="$1">$1</a></h6>'],
+		['regex' => '#\[h1(.*)\](.+)\[/h1\]#isU', 'replacement' => '<h1$1>$2</h1>'],
+		['regex' => '#\[h2(.*)\](.+)\[/h2\]#isU', 'replacement' => '<h2$1>$2</h2>'],
+		['regex' => '#\[h3(.*)\](.+)\[/h3\]#isU', 'replacement' => '<h3$1>$2</h3>'],
+		['regex' => '#\[h4(.*)\](.+)\[/h4\]#isU', 'replacement' => '<h4$1>$2</h4>'],
+		['regex' => '#\[h5(.*)\](.+)\[/h5\]#isU', 'replacement' => '<h5$1>$2</h5>'],
+		['regex' => '#\[h6(.*)\](.+)\[/h6\]#isU', 'replacement' => '<h6$1>$2</h6>'],
 
-		['regex' => '#\[p\](.+)\[/p\]#isU', 'replacement' => '<p>$1</p>'],
+		['regex' => '#\[p(.*)\](.+)\[/p\]#isU', 'replacement' => '<p$1>$2</p>'],
 
 		['regex' => '#\[color=(.+)\](.+)\[/color\]#isU', 'replacement' => '<span style="color:$1">$2</span>'],
 
