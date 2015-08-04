@@ -19,6 +19,7 @@ class BBCodeTest extends \PHPUnit_Framework_TestCase
 	{
 		$bbcode = new BBCode(__DIR__ . '/files/constructor-1.ini');
 
+		$this->assertFalse($bbcode->isQuoteHtml());
 		$this->assertEquals([
 			'#\[br\]#i' => '<br>',
 			'#\[b\](.+)\[/b\]#isU' => '<strong>$1</strong>',
@@ -31,10 +32,10 @@ class BBCodeTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testConstructorWithNull()
 	{
-		$bbcode = new BBCode(null);
+		$bbcode = new BBCode(null, true);
 
 		$this->assertEquals([], $bbcode->getBbCodes());
-
+		$this->assertTrue($bbcode->isQuoteHtml());
 	}
 
 	/**
@@ -219,10 +220,19 @@ class BBCodeTest extends \PHPUnit_Framework_TestCase
 	public function dataProviderParse()
 	{
 		return [
-			[__DIR__ . '/files/constructor-2.ini', file_get_contents(__DIR__ . '/files/text-in-1.txt'), file_get_contents(__DIR__ . '/files/text-out-1.txt')],
-			[__DIR__ . '/files/constructor-2.ini', file_get_contents(__DIR__ . '/files/text-in-2.txt'), file_get_contents(__DIR__ . '/files/text-out-2.txt')],
-			[__DIR__ . '/files/constructor-1.ini', file_get_contents(__DIR__ . '/files/text-in-2.txt'), file_get_contents(__DIR__ . '/files/text-out-3.txt')],
-			[__DIR__ . '/files/constructor-1.ini', file_get_contents(__DIR__ . '/files/text-in-4.txt'), file_get_contents(__DIR__ . '/files/text-out-4.txt')],
+			[__DIR__ . '/files/constructor-2.ini', file_get_contents(__DIR__ . '/files/text-in-1.txt'), file_get_contents(__DIR__ . '/files/text-out-1.txt'), false],
+			[__DIR__ . '/files/constructor-2.ini', file_get_contents(__DIR__ . '/files/text-in-2.txt'), file_get_contents(__DIR__ . '/files/text-out-2.txt'), false],
+			[__DIR__ . '/files/constructor-1.ini', file_get_contents(__DIR__ . '/files/text-in-2.txt'), file_get_contents(__DIR__ . '/files/text-out-3.txt'), false],
+			[__DIR__ . '/files/constructor-1.ini', file_get_contents(__DIR__ . '/files/text-in-4.txt'), file_get_contents(__DIR__ . '/files/text-out-4.txt'), false],
+
+			[__DIR__ . '/files/constructor-1.ini', file_get_contents(__DIR__ . '/files/text-in-5.txt'), file_get_contents(__DIR__ . '/files/text-out-5.txt'), false],
+
+			[__DIR__ . '/files/constructor-2.ini', file_get_contents(__DIR__ . '/files/text-in-1.txt'), file_get_contents(__DIR__ . '/files/text-out-1.txt'), true],
+			[__DIR__ . '/files/constructor-2.ini', file_get_contents(__DIR__ . '/files/text-in-2.txt'), file_get_contents(__DIR__ . '/files/text-out-2.txt'), true],
+			[__DIR__ . '/files/constructor-1.ini', file_get_contents(__DIR__ . '/files/text-in-2.txt'), file_get_contents(__DIR__ . '/files/text-out-3.txt'), true],
+			[__DIR__ . '/files/constructor-1.ini', file_get_contents(__DIR__ . '/files/text-in-4.txt'), file_get_contents(__DIR__ . '/files/text-out-4.txt'), true],
+
+			[__DIR__ . '/files/constructor-1.ini', file_get_contents(__DIR__ . '/files/text-in-5.txt'), file_get_contents(__DIR__ . '/files/text-out-6.txt'), true],
 		];
 	}
 
@@ -230,13 +240,26 @@ class BBCodeTest extends \PHPUnit_Framework_TestCase
 	 * @param string $file
 	 * @param string $text
 	 * @param string $expected
+	 * @param bool $quoteHtml
 	 * @covers ::parse
 	 * @dataProvider dataProviderParse
 	 */
-	public function testParse($file, $text, $expected)
+	public function testParse($file, $text, $expected, $quoteHtml)
 	{
-		$bbcode = new BBCode($file);
+		$bbcode = new BBCode($file, $quoteHtml);
 
 		$this->assertSame($expected, $bbcode->parse($text));
+	}
+
+	/**
+	 * @covers ::isQuoteHtml
+	 * @covers ::setQuoteHtml
+	 */
+	public function testGetSetQuoteHtml()
+	{
+		$bbcode = new BBCode();
+		$this->assertFalse($bbcode->isQuoteHtml());
+		$this->assertSame($bbcode, $bbcode->setQuoteHtml(true));
+		$this->assertTrue($bbcode->isQuoteHtml());
 	}
 }

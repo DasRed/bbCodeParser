@@ -1,0 +1,2 @@
+<strong>[nuff]&lt;span&gt;Hallo&lt;/span&gt;[/nuff]<br>
+Welt</strong>

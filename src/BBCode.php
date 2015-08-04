@@ -21,16 +21,24 @@ class BBCode
 	protected $bbCodes = [];
 
 	/**
+	 *
+	 * @var bool
+	 */
+	protected $quoteHtml = false;
+
+	/**
 	 * construct
 	 *
 	 * @param string $configFile
+	 * @param bool $quoteHtml
 	 */
-	public function __construct($configFile = __DIR__ . '/../config/bbcodes.php')
+	public function __construct($configFile = __DIR__ . '/../config/bbcodes.php', $quoteHtml = false)
 	{
 		if ($configFile !== null)
 		{
 			$this->loadConfig($configFile);
 		}
+		$this->setQuoteHtml($quoteHtml);
 	}
 
 	/**
@@ -53,6 +61,15 @@ class BBCode
 	public function getBbCodes()
 	{
 		return $this->bbCodes;
+	}
+
+	/**
+	 *
+	 * @return bool
+	 */
+	public function isQuoteHtml()
+	{
+		return $this->quoteHtml;
 	}
 
 	/**
@@ -99,7 +116,6 @@ class BBCode
 		}
 
 		return $this;
-
 	}
 
 	/**
@@ -112,11 +128,28 @@ class BBCode
 	 */
 	public function parse($str)
 	{
+		if ($this->isQuoteHtml() === true)
+		{
+			$str = htmlentities($str);
+		}
+
 		foreach ($this->getBbCodes() as $key => $val)
 		{
 			$str = preg_replace($key, $val, $str);
 		}
 
 		return $str;
+	}
+
+	/**
+	 *
+	 * @param bool $quoteHtml
+	 * @return self
+	 */
+	public function setQuoteHtml($quoteHtml)
+	{
+		$this->quoteHtml = (bool)$quoteHtml;
+
+		return $this;
 	}
 }
