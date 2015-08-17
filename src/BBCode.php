@@ -134,7 +134,7 @@ class BBCode
 	{
 		if ($this->isQuoteHtml() === true)
 		{
-			$str = htmlentities($str);
+			$str = htmlspecialchars($str, ENT_QUOTES);
 		}
 
 		foreach ($this->getBbCodes() as $key => $val)

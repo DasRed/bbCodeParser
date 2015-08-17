@@ -262,4 +262,26 @@ class BBCodeTest extends \PHPUnit_Framework_TestCase
 		$this->assertSame($bbcode, $bbcode->setQuoteHtml(true));
 		$this->assertTrue($bbcode->isQuoteHtml());
 	}
+
+	public function dataProviderParseWithQuoting()
+	{
+		return [
+			['abc', 'abc'],
+			['<a href="nuff&narf">Hallo [b]Welt[/b]</a>', '&lt;a href=&quot;nuff&amp;narf&quot;&gt;Hallo [b]Welt[/b]&lt;/a&gt;'],
+			['<a href="nuff">Nüff [b]löl < gröhl[/b]</a>', '&lt;a href=&quot;nuff&quot;&gt;Nüff [b]löl &lt; gröhl[/b]&lt;/a&gt;'],
+			['<a href="n\'uff">Nüff [b]löl < gröhl[/b]</a>', '&lt;a href=&quot;n&#039;uff&quot;&gt;Nüff [b]löl &lt; gröhl[/b]&lt;/a&gt;'],
+		];
+	}
+
+	/**
+	 *
+	 * @covers ::parse
+	 * @dataProvider dataProviderParseWithQuoting
+	 */
+	public function testParseWithQuoting($in, $out)
+	{
+		$bbcode = new BBCode(null, true);
+
+		$this->assertEquals($out, $bbcode->parse($in));
+	}
 }
