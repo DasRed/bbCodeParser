@@ -32,8 +32,12 @@ class BBCode
 	 * @param string $configFile
 	 * @param bool $quoteHtml
 	 */
-	public function __construct($configFile = __DIR__ . '/../config/bbcodes.php', $quoteHtml = false)
+	public function __construct($configFile = false, $quoteHtml = false)
 	{
+		if ($configFile === false)
+		{
+			$configFile = __DIR__ . '/../config/bbcodes.php';
+		}
 		if ($configFile !== null)
 		{
 			$this->loadConfig($configFile);
